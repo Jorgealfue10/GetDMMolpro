@@ -32,25 +32,28 @@ def extract_matrix_elements(lines):
     :return: A tuple containing the matrix elements, file1, and file2.
     :rtype: tuple
     """
+    # Gets the file names containing the wf
     file1 = lines[4].split()[5]
     file2 = lines[5].split()[5]
+    # Each filename has a defined number of states
     dim_ket = dimensions[file1]
     dim_bra = dimensions[file2]
     dm = np.zeros((dim_bra, dim_ket, 3))
-    #print(dim_ket,dim_bra)
+
+    # Extracts the matrix elements
     for line in lines[6:]:
         if '!MRCI expec' in line or '!MRCI trans' in line:
             #print(line)
             splited = line.split()
             if "L" in splited[2]:
                 continue
+            # Extracts index of the matrix
             dims = splited[2]
             dim1, dim2, coor = int(dims[1]) - 1, int(dims[9]) - 1, coordinates[dims[7]]
-           # print(file1, file2, dim_ket, dim_bra, dim1, dim2, coor)
             
+            # Extracts the matrix value
             dm[dim1, dim2, coor] = float(splited[3])
 
-            #print(dm)
     return dm,file1,file2
 
 dm_tot_comp = np.zeros((100,nstates, nstates,3))

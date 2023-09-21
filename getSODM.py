@@ -77,7 +77,10 @@ for i in range(nstates):
             dm_not = np.ma.masked_equal(dm_tot[:,i,j],0)
             dm_notzeros = dm_not.compressed()
         if i != j:
-            dm_notzeros = np.zeros((len(dists)))
+            # dm_not = np.ma.masked_equal(dm_tot[:,i,j],0)
+            # dm_notzeros = dm_not.compressed()
+            # dm_notzeros = np.zeros((len(dists)))
+            dm_notzeros = dm_tot[:,i,j]
         if i+1 < 10:
             if j+1 < 10:
                 np.savetxt(dir+"dm_tot_0"+str(i+1)+"_0"+str(j+1)+".dat",dm_notzeros[:],fmt='%8f')
